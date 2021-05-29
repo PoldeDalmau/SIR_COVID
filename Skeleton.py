@@ -1,5 +1,24 @@
-def deriv(y, t, N, beta, gamma):
-    """The SIR model differential equations.
+def deriv(y, t, beta, gamma):
+    """
+    The SIR model differential equations for one population.
+    Parameters
+    ------------------------------------
+    y: vector
+        vector where the number of S (susceptible), I (infected) and R (recovered) are stored
+    t:
+        grid of time points (in days)
+    beta: float
+        contact rate of the disease. An infected individual comes into contact with beta*N individuals per unit time
+    gamma: float
+        mean recovery rate. 1/gamma is the average duration of the disease (in days)
+    Returns
+    -----------------------------------
+    dSdt: float
+        Differential equation for the change in susceptible individuals
+    dIdt: float
+        Differential equation for the change in infected individuals
+    dRdt: float
+        Differential equation for the change in recovered individuals
     """
     S, I, R = y
     dSdt = -beta * S * I / N
@@ -7,30 +26,55 @@ def deriv(y, t, N, beta, gamma):
     dRdt = gamma * I
     return dSdt, dIdt, dRdt
 
-def deriv2pop(y, t, beta, eta):
-    """SIR for two populations"""
+def deriv2pop(y, t, beta, gamma):
+    """
+    The SIR model differential equations for two populations.
+    Parameters
+    ------------------------------------
+    y: vector
+        vector where the number of S (susceptible), I (infected) and R (recovered) are stored
+    t:
+        grid of time points (in days)
+    beta: float
+        contact rate of the disease. An infected individual comes into contact with beta*N individuals per unit time
+    gamma: float
+        mean recovery rate. 1/gamma is the average duration of the disease (in days)
+    Returns
+    -----------------------------------
+    dS1dt: float
+        Differential equation for the change in susceptible individuals in population 1
+    dS2dt: float
+        Differential equation for the change in susceptible individuals in population 2
+    dI1dt: float
+        Differential equation for the change in infected individuals in population 1
+    dI2dt: float
+        Differential equation for the change in infected individuals in population 2
+    dR1dt: float
+        Differential equation for the change in recovered individuals in population 1
+    dR2dt: float
+        Differential equation for the change in recovered individuals in population 2
+    """
     S_1, S_2, I_1, I_2, R_1, R_2 = y
     
-    beta11 = beta[0][0]
-    beta12 = beta[0][1]
-    beta21 = beta[1][0]
-    beta22 = beta[1][1]
+    beta11 = beta[0][0]              # beta in population 1
+    beta12 = beta[0][1]              # beta that determines the influence of population 2 on population 1
+    beta21 = beta[1][0]              # beta that determines the influence of population 1 on population 2
+    beta22 = beta[1][1]              # beta in population 2
 
     
-    eta1 = eta[0][0]
-    eta2 = eta[1][1]
+    gamma1 = gamma[0][0]              # gamma in population 1
+    gamma2 = gamma[1][1]              # gamma in population 2
     
-    dS1dt = -S_1 * (beta11 * I_1 + beta12 * I_2)
-    dS2dt = -S_2 * (beta21 * I_1 + beta22 * I_2)
+    dS1dt = -S_1/N1 * (beta11 * I_1 + beta12 * I_2)
+    dS2dt = -S_2/N2 * (beta21 * I_1 + beta22 * I_2)
     
-    dI1dt = S_1 * (beta11 * I_1 + beta12 * I_2) - eta1 * I_1
-    dI2dt = S_2 * (beta21 * I_1 + beta22 * I_2) - eta2 * I_2
+    dI1dt = S_1 * (beta11 * I_1 + beta12 * I_2) - gamma1 * I_1
+    dI2dt = S_2 * (beta21 * I_1 + beta22 * I_2) - gamma2 * I_2
     
-    dR1dt = eta1 * I_1
-    dR2dt = eta2 * I_2
+    dR1dt = gamma1 * I_1
+    dR2dt = gamma2 * I_2
     
     return dS1dt, dS2dt, dI1dt, dI2dt, dR1dt, dR2dt
-    
     
 def plot(S,I,R):
     # Plot the data on three separate curves for S(t), I(t) and R(t)
