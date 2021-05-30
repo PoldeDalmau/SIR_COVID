@@ -68,8 +68,8 @@ def deriv2pop(y, t, beta, gamma):
     dS1dt = -S_1/N1 * (beta11 * I_1 + beta12 * I_2)
     dS2dt = -S_2/N2 * (beta21 * I_1 + beta22 * I_2)
     
-    dI1dt = S_1 * (beta11 * I_1 + beta12 * I_2) - gamma1 * I_1
-    dI2dt = S_2 * (beta21 * I_1 + beta22 * I_2) - gamma2 * I_2
+    dI1dt = S_1/N1 * (beta11 * I_1 + beta12 * I_2) - gamma1 * I_1
+    dI2dt = S_2/N2 * (beta21 * I_1 + beta22 * I_2) - gamma2 * I_2
     
     dR1dt = gamma1 * I_1
     dR2dt = gamma2 * I_2
