@@ -31,8 +31,8 @@ def deriv2pop(y, t, beta, gamma):
     The SIR model differential equations for two populations.
     Parameters
     ------------------------------------
-    y: vector
-        vector where the number of S (susceptible), I (infected) and R (recovered) are stored
+    y: tuple
+        tuple where the number of S (susceptible), I (infected) and R (recovered) are stored
     t:
         grid of time points (in days)
     beta: float
@@ -76,6 +76,33 @@ def deriv2pop(y, t, beta, gamma):
     
     return dS1dt, dS2dt, dI1dt, dI2dt, dR1dt, dR2dt
     
+def derivnpop(y, t, beta, gamma):
+    """The SIR model differential equations for two populations.
+    Parameters
+    ------------------------------------
+    y: tuple
+        tuple where the number of S (susceptible), I (infected) and R (recovered) are stored
+    t:
+        grid of time points (in days)
+    beta: float
+        contact rate of the disease. An infected individual comes into contact with beta*N individuals per unit time
+    gamma: float
+        mean recovery rate. 1/gamma is the average duration of the disease (in days)
+    Returns
+    -----------------------------------
+    *dSdt, *dIdt, *dRdt: tuple
+        Rate of change of Susceptibles, Infected and Recovered for each population at time t and y.
+    """
+    S = np.array(y[:2])      # 2 is the number of populations
+    I = np.array(y[2:2*2])
+    R = np.array(y[-2:])
+    
+    dSdt = -(S/N)*(beta.dot(I))
+    dIdt =  S/N*(beta.dot(I)) - gamma.dot(I)
+    dRdt =  gamma.dot(I)
+    
+    return *dSdt, *dIdt, *dRdt
+
 def plot(S,I,R):
     # Plot the data on three separate curves for S(t), I(t) and R(t)
     fig = plt.figure(facecolor='w')
