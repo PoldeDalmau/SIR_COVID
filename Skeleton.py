@@ -20,11 +20,17 @@ def deriv(y, t, beta, gamma):
     dRdt: float
         Differential equation for the change in recovered individuals
     """
-    S, I, R = y
-    dSdt = -beta * S * I / N
+    S, I, R, V = y
+    if S > 0:
+        dSdt = -beta * S * I / N - alpha*u
+        dVdt = alpha*u
+    else:
+        dSdt = -beta * S * I / N
+        dVdt = 0
     dIdt = beta * S * I / N - gamma * I
     dRdt = gamma * I
-    return dSdt, dIdt, dRdt
+    
+    return dSdt, dIdt, dRdt, dVdt
 
 def deriv2pop(y, t, beta, gamma):
     """
@@ -107,10 +113,12 @@ def plot(S,I,R):
     # Plot the data on three separate curves for S(t), I(t) and R(t)
     fig = plt.figure(facecolor='w')
     ax = fig.add_subplot(111, facecolor='#dddddd', axisbelow=True)
-    ax.plot(t, S/1000, 'b', alpha=0.5, lw=2, label='Susceptible')
-    ax.plot(t, I/1000, 'r', alpha=0.5, lw=2, label='Active Infections')
-    ax.plot(t, R/1000, 'g', alpha=0.5, lw=2, label='Removed')
-    #ax.plot(t, dIdt/1000, 'y', alpha=0.5, lw=2, label='Newly Infected')    
+    ax.plot(t, S/N, 'b', alpha=0.5, lw=2, label='Susceptible')
+    ax.plot(t, I/N, 'r', alpha=0.5, lw=2, label='Active Infections')
+    ax.plot(t, R/N, 'g', alpha=0.5, lw=2, label='Removed')
+    if u != 0:
+        ax.plot(t, V/N, 'c', alpha=0.5, lw=2, label='Vaccinated')
+    #ax.plot(t, beta*S*I/N**2, 'y', alpha=0.5, lw=2, label='Newly Infected')    
     ax.set_xlabel('Time /days')
     ax.set_ylabel('Number (1000s)')
     #ax.set_ylim(0,1.1)
