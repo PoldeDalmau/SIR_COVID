@@ -24,3 +24,30 @@ Simulate several regions that are in contact with each other. Region can be a co
 
 Implement the impact of vaccines in the code. Compute the fraction of vaccinated people for erradication of the virus.
 >>>>>>> ee720253e1ac5bdaa017dfbaa692616e0b19e30a
+
+=======
+
+Week 1 (25.05-30.05)
+Using the SIR model mentioned above, we were able to analyze the spread of a virus over a closed population using [this](https://gitlab.kwant-project.org/computational_physics/projects/Project-3_albertogori_compphys_bot_matteodeluca_pdedalmauhugue/-/blob/master/Skeleton.py#L1-33) set of differential equations to model the change in susceptible (S), infected (I) and recovered (R) people. The parameters that influece the spread of the infection are $`\beta`$ and $`\gamma`$, which define respectively the contact rate of the disease and the mean recovery rate. Changing these parameters, we can see how the spread of the virus has different outcomes in the figures below with a sample of 1000 people.
+
+![b=0.2, g=0.0667](Figures/1 pop, N = 1000, 300 days, b=0.2, g=0.0667.png)
+Fig.1: Plot of the pandemic with $`\beta = 0.2`$ and $`\gamma = \frac{1}{15}`$. In just over 100 days, over 90% of the population got the virus.
+
+![b=0.2, g=0.1](Figures/1 pop, N = 1000, 300 days, b=0.2, g=0.1.png)
+Fig.2: Plot of the pandemic with $`\beta = 0.2`$ and $`\gamma = \frac{1}{10}`$. In the same amount of time as in figure 1, less people got infected and the peak, which takes place after the same amount of time, is considerably smaller. This is because a bigger recovery rate means that people heal faster and thus can spread the virus for a shorter amount of time.
+
+![b=0.3, g=0.1](Figures/1 pop, N = 1000, 300 days, b=0.3, g=0.1.png)
+Fig.3: Plot of the pandemic with $`\beta = 0.3`$ and $`\gamma = \frac{1}{10}`$. Here, a bigger beta gives rise more quickly to the peak of the infection compared to the first 2 plots and over 90% of the population gets infected in less than 100 days.
+
+![b=0.2, g=0.1, big N](Figures/1 pop, N = 200000, 300 days, b=0.2, g=0.1.png)
+Fig.4: Plot of the pandemic with $`\beta = 0.3`$ , $`\gamma = \frac{1}{10}`$ and a population of N=200000. For this plot we used the same parameters as in figure 2, but a much bigger population. We can see that in the end the percentage of the people getting infected is the same, but the peak of the infection happens later, after about 120 days.
+
+After confirming that our code worked, we moved to 2 populations interacting. To do so, we used [this](https://gitlab.kwant-project.org/computational_physics/projects/Project-3_albertogori_compphys_bot_matteodeluca_pdedalmauhugue/-/blob/master/Skeleton.py#L35-83) set of differential equation to include the contact rate between the two different populations. In this case, $`\beta`$ and $`\gamma`$ are 2x2 matrices. The plots below show that the code works as expected and were all computed using $`\gamma = 0.2`$ for both populations.
+
+![b1=0.25, b12=0.10, b21=0.10, b22=0.45](Figures/2 pop, N1=1000, N2=4000, 100 days, b1=0.25, b12=0.10, b21=0.10, b22=0.45 g1=0.2, g2=0.2.png)
+Fig.5: Plot of the pandemic for 2 populations with $`\beta_11 = 0.25`$, $`\beta_12 = 0.10`$, $`\beta_21 = 0.10`$ and $`\beta_22 = 0.45`$. 
+
+=======
+
+Week 2 (31.05-06.06)
+For this week, we implemented the vaccines for one population following [this paper](https://www.medrxiv.org/content/10.1101/2021.02.05.21250572v2.full.pdf) and we did so [here](https://gitlab.kwant-project.org/computational_physics/projects/Project-3_albertogori_compphys_bot_matteodeluca_pdedalmauhugue/-/blob/master/Skeleton.py#L1-33). In this way, we can determine the modify of the vaccine and the rate at which people are vaccinated to see the different outcomes. Also, we can see how the virus spreads over a population that is already vaccinated in some percentage.
