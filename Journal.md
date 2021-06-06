@@ -49,7 +49,7 @@ Fig.3: Plot of the pandemic with $`\beta = 0.3`$ and $`\gamma = \frac{1}{10}`$. 
 
 Fig.4: Plot of the pandemic with $`\beta = 0.2`$ , $`\gamma = \frac{1}{10}`$ and a population of N=200000. For this plot we used the same parameters as in figure 2, but a much bigger population. We can see that in the end the percentage of the people getting infected is the same, but the peak of the infection happens later, after about 120 days.
 
-After confirming that our code worked, we moved to 2 populations interacting. To do so, we used [this](https://gitlab.kwant-project.org/computational_physics/projects/Project-3_albertogori_compphys_bot_matteodeluca_pdedalmauhugue/-/blob/master/Skeleton.py#L35-83) set of differential equation to include the contact rate between the two different populations. In this case, $`\beta`$ and $`\gamma`$ are 2x2 matrices. The plots below show that the code works as expected and were all computed using $`\gamma = 0.2`$ for both populations.
+After confirming that our code worked, we moved to 2 populations interacting. To do so, we used [this](https://gitlab.kwant-project.org/computational_physics/projects/Project-3_albertogori_compphys_bot_matteodeluca_pdedalmauhugue/-/blob/master/Skeleton.py#L35-83) set of differential equations to include the contact rate between the two different populations. In this case, $`\beta`$ and $`\gamma`$ are 2x2 matrices. The plots below show that the code works as expected and were all computed using $`\gamma = 0.2`$ for both populations.
 
 ![b1=0.25, b12=0.10, b21=0.10, b22=0.45](Figures/2 pop, N1=1000, N2=1000, 100 days, b1=0.25, b12=0.10, b21=0.10, b22=0.45 g1=0.2, g2=0.2, R0=2.25.png)
 
@@ -72,5 +72,10 @@ For this week, we implemented the vaccines for one population following [this pa
 
 Fig.8: Plot of the pandemic with $`\beta = 0.2`$ , $`\gamma = \frac{1}{10}`$ and a population of N=200000. This was done using the same parameters as in figure 4 but vaccinating 100 people per day (u = 100) with a vaccine efficacy at 90% (alpha = 0.9). We can see that the peak as well as the total number of infections are reduced.
 
-![u=500, b=0.2, g=0.1, big N](Figures/1 pop+vacc, N = 200000, 300 days, b=0.2, g=0.1, u=100, alpha=0.9.png)
-Fig.9: Thisplot was obtained using the same parameters as before except for u = 500. This means that after 100 days (which is when the peak happens without vaccines) 1/4 of the population has been vaccinated. Because of this, the peak is much smaller and happens later. 
+![u=500, b=0.2, g=0.1, big N](Figures/1 pop+vacc, N = 200000, 300 days, b=0.2, g=0.1, u=500, alpha=0.9.png)
+
+Fig.9: This plot was obtained using the same parameters as before except for u = 500. This means that after 100 days (which is when the peak happens without vaccines) 1/4 of the population has been vaccinated. Because of this, the peak is much smaller and happens later.
+
+=======
+
+Week 3 (07.06-13.06)
