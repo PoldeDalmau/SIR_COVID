@@ -131,4 +131,12 @@ def plot(S,I,R):
         ax.spines[spine].set_visible(False)
     plt.show()
     
-    
+def integrate(I, t):
+    integral = np.zeros(len(t))
+    for i in t:
+        integral[i] = np.trapz(I[:i], x = t[:i])
+        
+    return integral
+
+def linear_func(x, rep_num):
+    return -rep_num/N * x + rep_num/N*Rem[0]
