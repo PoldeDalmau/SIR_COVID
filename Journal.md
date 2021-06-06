@@ -47,7 +47,7 @@ Fig.3: Plot of the pandemic with $`\beta = 0.3`$ and $`\gamma = \frac{1}{10}`$. 
 
 ![b=0.2, g=0.1, big N](Figures/1 pop, N = 200000, 300 days, b=0.2, g=0.1.png)
 
-Fig.4: Plot of the pandemic with $`\beta = 0.3`$ , $`\gamma = \frac{1}{10}`$ and a population of N=200000. For this plot we used the same parameters as in figure 2, but a much bigger population. We can see that in the end the percentage of the people getting infected is the same, but the peak of the infection happens later, after about 120 days.
+Fig.4: Plot of the pandemic with $`\beta = 0.2`$ , $`\gamma = \frac{1}{10}`$ and a population of N=200000. For this plot we used the same parameters as in figure 2, but a much bigger population. We can see that in the end the percentage of the people getting infected is the same, but the peak of the infection happens later, after about 120 days.
 
 After confirming that our code worked, we moved to 2 populations interacting. To do so, we used [this](https://gitlab.kwant-project.org/computational_physics/projects/Project-3_albertogori_compphys_bot_matteodeluca_pdedalmauhugue/-/blob/master/Skeleton.py#L35-83) set of differential equation to include the contact rate between the two different populations. In this case, $`\beta`$ and $`\gamma`$ are 2x2 matrices. The plots below show that the code works as expected and were all computed using $`\gamma = 0.2`$ for both populations.
 
@@ -55,15 +55,22 @@ After confirming that our code worked, we moved to 2 populations interacting. To
 
 Fig.5: Plot of the pandemic for 2 populations with $`\beta_11 = 0.25`$, $`\beta_12 = 0.10`$, $`\beta_21 = 0.10`$ and $`\beta_22 = 0.45`$. Here we can see that the pandemic spreads fast and to the majority of the population, especially in population 2 which has a higher beta. The value of R_0 for the combined population is in fact 2.25.
 
-![b1=0.10, b12=0.10, b21=0.10, b22=0.20](Figures/2 pop, N1=1000, N2=1000, 100 days, b1=0.10, b12=0.10, b21=0.10, b22=0.20 g1=0.2, g2=0.2, R0=1 .png)
+![b1=0.10, b12=0.10, b21=0.10, b22=0.20](Figures/2 pop, N1=1000, N2=1000, 100 days, b1=0.10, b12=0.10, b21=0.10, b22=0.20 g1=0.2, g2=0.2, R0=0.75.png)
 
 Fig.6: Plot of the pandemic for 2 populations with $`\beta_11 = 0.10`$, $`\beta_12 = 0.10`$, $`\beta_21 = 0.10`$ and $`\beta_22 = 0.20`$. This combination of beta and gamma gives a value R_0 = 0.75 and in fact the pandemic has light effects, with no visible peaks.
 
-![b1=0.20, b12=0.50, b21=0.10, b22=0.20](Figures/22 pop, N1=1000, N2=1000, 100 days, b1=0.20, b12=0.50, b21=0.10, b22=0.20 g1=0.2, g2=0.2.png)
+![b1=0.20, b12=0.50, b21=0.10, b22=0.20](Figures/2 pop, N1=1000, N2=1000, 100 days, b1=0.20, b12=0.50, b21=0.10, b22=0.20 g1=0.2, g2=0.2.png)
 
-Fig.6: Plot of the pandemic for 2 populations with $`\beta_11 = 0.20`$, $`\beta_12 = 0.50`$, $`\beta_21 = 0.10`$ and $`\beta_22 = 0.20`$. This plot was made to show how one population can have an influence on the other. In fact, each has the same value for beta, but population 2 has a big influece on population 1 given by $`\beta_12 = 0.50`$. As a result, population 1 experiences a much bigger rise in infections.
+Fig.7: Plot of the pandemic for 2 populations with $`\beta_11 = 0.20`$, $`\beta_12 = 0.50`$, $`\beta_21 = 0.10`$ and $`\beta_22 = 0.20`$. This plot was made to show how one population can have an influence on the other. In fact, each has the same value for beta, but population 2 has a big influece on population 1 given by $`\beta_12 = 0.50`$. As a result, population 1 experiences a much bigger rise in infections.
 
 =======
 
 Week 2 (31.05-06.06)
-For this week, we implemented the vaccines for one population following [this paper](https://www.medrxiv.org/content/10.1101/2021.02.05.21250572v2.full.pdf) and we did so [here](https://gitlab.kwant-project.org/computational_physics/projects/Project-3_albertogori_compphys_bot_matteodeluca_pdedalmauhugue/-/blob/master/Skeleton.py#L1-33). In this way, we can determine the modify of the vaccine and the rate at which people are vaccinated to see the different outcomes. Also, we can see how the virus spreads over a population that is already vaccinated in some percentage.
+For this week, we implemented the vaccines for one population following [this paper](https://www.medrxiv.org/content/10.1101/2021.02.05.21250572v2.full.pdf) and we did so [here](https://gitlab.kwant-project.org/computational_physics/projects/Project-3_albertogori_compphys_bot_matteodeluca_pdedalmauhugue/-/blob/master/Skeleton.py#L1-33). In this way, we can modify the efficacy of the vaccine ($`\alpha`$) and the rate at which people are vaccinated (u) to see the different outcomes. Also, we can see how the virus spreads over a population that is already vaccinated in some percentage. 
+
+![u=100, b=0.2, g=0.1, big N](Figures/1 pop+vacc, N = 200000, 300 days, b=0.2, g=0.1, u=100, alpha=0.9.png)
+
+Fig.8: Plot of the pandemic with $`\beta = 0.2`$ , $`\gamma = \frac{1}{10}`$ and a population of N=200000. This was done using the same parameters as in figure 4 but vaccinating 100 people per day (u = 100) with a vaccine efficacy at 90% (alpha = 0.9). We can see that the peak as well as the total number of infections are reduced.
+
+![u=500, b=0.2, g=0.1, big N](Figures/1 pop+vacc, N = 200000, 300 days, b=0.2, g=0.1, u=100, alpha=0.9.png)
+Fig.9: Thisplot was obtained using the same parameters as before except for u = 500. This means that after 100 days (which is when the peak happens without vaccines) 1/4 of the population has been vaccinated. Because of this, the peak is much smaller and happens later. 
