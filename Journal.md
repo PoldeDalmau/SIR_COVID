@@ -53,15 +53,15 @@ After confirming that our code worked, we moved to 2 populations interacting. To
 
 ![b1=0.25, b12=0.10, b21=0.10, b22=0.45](Figures/2 pop, N1=1000, N2=1000, 100 days, b1=0.25, b12=0.10, b21=0.10, b22=0.45 g1=0.2, g2=0.2, R0=2.25.png)
 
-Fig.5: Plot of the pandemic for 2 populations with $`\beta_11 = 0.25`$, $`\beta_12 = 0.10`$, $`\beta_21 = 0.10`$ and $`\beta_22 = 0.45`$. Here we can see that the pandemic spreads fast and to the majority of the population, especially in population 2 which has a higher beta. The value of R_0 for the combined population is in fact 2.25.
+Fig.5: Plot of the pandemic for 2 populations with $`\beta_{11} = 0.25`$, $`\beta_{12} = 0.10`$, $`\beta_{21} = 0.10`$ and $`\beta_{22} = 0.45`$. Here we can see that the pandemic spreads fast and to the majority of the population, especially in population 2 which has a higher beta. The value of R_0 for the combined population is in fact 2.25.
 
 ![b1=0.10, b12=0.10, b21=0.10, b22=0.20](Figures/2 pop, N1=1000, N2=1000, 100 days, b1=0.10, b12=0.10, b21=0.10, b22=0.20 g1=0.2, g2=0.2, R0=0.75.png)
 
-Fig.6: Plot of the pandemic for 2 populations with $`\beta_11 = 0.10`$, $`\beta_12 = 0.10`$, $`\beta_21 = 0.10`$ and $`\beta_22 = 0.20`$. This combination of beta and gamma gives a value R_0 = 0.75 and in fact the pandemic has light effects, with no visible peaks.
+Fig.6: Plot of the pandemic for 2 populations with $`\beta_{11} = 0.10`$, $`\beta_{12} = 0.10`$, $`\beta_{21} = 0.10`$ and $`\beta_{22} = 0.20`$. This combination of beta and gamma gives a value R_0 = 0.75 and in fact the pandemic has light effects, with no visible peaks.
 
 ![b1=0.20, b12=0.50, b21=0.10, b22=0.20](Figures/2 pop, N1=1000, N2=1000, 100 days, b1=0.20, b12=0.50, b21=0.10, b22=0.20 g1=0.2, g2=0.2.png)
 
-Fig.7: Plot of the pandemic for 2 populations with $`\beta_11 = 0.20`$, $`\beta_12 = 0.50`$, $`\beta_21 = 0.10`$ and $`\beta_22 = 0.20`$. This plot was made to show how one population can have an influence on the other. In fact, each has the same value for beta, but population 2 has a big influece on population 1 given by $`\beta_12 = 0.50`$. As a result, population 1 experiences a much bigger rise in infections.
+Fig.7: Plot of the pandemic for 2 populations with $`\beta_{11} = 0.20`$, $`\beta_{12} = 0.50`$, $`\beta_{21} = 0.10`$ and $`\beta_{22} = 0.20`$. This plot was made to show how one population can have an influence on the other. In fact, each has the same value for beta, but population 2 has a big influece on population 1 given by $`\beta_{12} = 0.50`$. As a result, population 1 experiences a much bigger rise in infections.
 
 =======
 
@@ -75,6 +75,26 @@ Fig.8: Plot of the pandemic with $`\beta = 0.2`$ , $`\gamma = \frac{1}{10}`$ and
 ![u=500, b=0.2, g=0.1, big N](Figures/1 pop+vacc, N = 200000, 300 days, b=0.2, g=0.1, u=500, alpha=0.9.png)
 
 Fig.9: This plot was obtained using the same parameters as before except for u = 500. This means that after 100 days (which is when the peak happens without vaccines) 1/4 of the population has been vaccinated. Because of this, the peak is much smaller and happens later.
+
+In addition, also following methods of the section 3.2 from the [paper cited above](Literature/Canada_vaccination.pdf), we obtained some values for the basic reproduction number $`R_0`$, the infection rate $`\beta`$ and the removal rate $`\gamma`$. Below is an example for the entire state of Canada between July 17, 2020 and January 8, 2021:
+
+The paper mentions that one can derive the following relations directly from the SIR model:
+
+$`\log\left(\frac{S(t)}{S(t_s)}\right) = -\frac{R_0}{N}\cdot(R(t)-R(t_s))`$
+
+$`R(t) - R(t_s) = \gamma \int_{t_s}^t I(\tau) \mathrm{d}\tau`$
+
+estimating the parameters using linear regression yields:
+
+This study: $`\beta = 0.0827`$, $`R_0 = 1.24`$, $`\gamma = 0.0670`$
+Literature: $`\beta = 0.0976`$, $`R_0 = 1.25`$, $`\gamma = 0.0781`$
+
+![](Figures/Linear_regressions_Canada.JPG)
+
+Fig.10: Plots of the equations above using real data for Canada.
+
+
+
 
 =======
 
