@@ -28,24 +28,40 @@ Implement the impact of vaccines in the code. Compute the fraction of vaccinated
 =======
 
 Week 1 (25.05-30.05)
-Using the SIR model mentioned above, we were able to analyze the spread of a virus over a closed population using [this](https://gitlab.kwant-project.org/computational_physics/projects/Project-3_albertogori_compphys_bot_matteodeluca_pdedalmauhugue/-/blob/master/Skeleton.py#L1-33) set of differential equations to model the change in susceptible (S), infected (I) and recovered (R) people. The parameters that influece the spread of the infection are $`\beta`$ and $`\gamma`$, which define respectively the contact rate of the disease and the mean recovery rate. Changing these parameters, we can see how the spread of the virus has different outcomes in the figures below with a sample of 1000 people.
+Using the SIR model mentioned above, we were able to analyze the spread of a virus over a closed population using [this](https://gitlab.kwant-project.org/computational_physics/projects/Project-3_albertogori_compphys_bot_matteodeluca_pdedalmauhugue/-/blob/master/Skeleton.py#L1-33) set of differential equations to model the change in susceptible (S), infected (I) and recovered (R) people. The parameters that influece the spread of the infection are $`\beta`$ and $`\gamma`$, which define respectively the contact rate of the disease and the mean recovery rate. With these two parameters, we can compute a third one called "basic reproduction factor" $`R_0 = \frac{\beta}{\gamma}`$ which gives an indication of how much the infection will spread. Changing these parameters, we can see how the spread of the virus has different outcomes in the figures below with a sample of 1000 people.
 
 ![b=0.2, g=0.0667](Figures/1 pop, N = 1000, 300 days, b=0.2, g=0.0667.png)
-Fig.1: Plot of the pandemic with $`\beta = 0.2`$ and $`\gamma = \frac{1}{15}`$. In just over 100 days, over 90% of the population got the virus.
+
+Fig.1: Plot of the pandemic with $`\beta = 0.2`$ and $`\gamma = \frac{1}{15}`$. In just over 100 days, over 90% of the population got the virus, also due to a factor R_0 = 3
+
 
 ![b=0.2, g=0.1](Figures/1 pop, N = 1000, 300 days, b=0.2, g=0.1.png)
+
 Fig.2: Plot of the pandemic with $`\beta = 0.2`$ and $`\gamma = \frac{1}{10}`$. In the same amount of time as in figure 1, less people got infected and the peak, which takes place after the same amount of time, is considerably smaller. This is because a bigger recovery rate means that people heal faster and thus can spread the virus for a shorter amount of time.
 
+
 ![b=0.3, g=0.1](Figures/1 pop, N = 1000, 300 days, b=0.3, g=0.1.png)
+
 Fig.3: Plot of the pandemic with $`\beta = 0.3`$ and $`\gamma = \frac{1}{10}`$. Here, a bigger beta gives rise more quickly to the peak of the infection compared to the first 2 plots and over 90% of the population gets infected in less than 100 days.
 
+
 ![b=0.2, g=0.1, big N](Figures/1 pop, N = 200000, 300 days, b=0.2, g=0.1.png)
+
 Fig.4: Plot of the pandemic with $`\beta = 0.3`$ , $`\gamma = \frac{1}{10}`$ and a population of N=200000. For this plot we used the same parameters as in figure 2, but a much bigger population. We can see that in the end the percentage of the people getting infected is the same, but the peak of the infection happens later, after about 120 days.
 
 After confirming that our code worked, we moved to 2 populations interacting. To do so, we used [this](https://gitlab.kwant-project.org/computational_physics/projects/Project-3_albertogori_compphys_bot_matteodeluca_pdedalmauhugue/-/blob/master/Skeleton.py#L35-83) set of differential equation to include the contact rate between the two different populations. In this case, $`\beta`$ and $`\gamma`$ are 2x2 matrices. The plots below show that the code works as expected and were all computed using $`\gamma = 0.2`$ for both populations.
 
-![b1=0.25, b12=0.10, b21=0.10, b22=0.45](Figures/2 pop, N1=1000, N2=4000, 100 days, b1=0.25, b12=0.10, b21=0.10, b22=0.45 g1=0.2, g2=0.2.png)
-Fig.5: Plot of the pandemic for 2 populations with $`\beta_11 = 0.25`$, $`\beta_12 = 0.10`$, $`\beta_21 = 0.10`$ and $`\beta_22 = 0.45`$. 
+![b1=0.25, b12=0.10, b21=0.10, b22=0.45](Figures/2 pop, N1=1000, N2=1000, 100 days, b1=0.25, b12=0.10, b21=0.10, b22=0.45 g1=0.2, g2=0.2, R0=2.25.png)
+
+Fig.5: Plot of the pandemic for 2 populations with $`\beta_11 = 0.25`$, $`\beta_12 = 0.10`$, $`\beta_21 = 0.10`$ and $`\beta_22 = 0.45`$. Here we can see that the pandemic spreads fast and to the majority of the population, especially in population 2 which has a higher beta. The value of R_0 for the combined population is in fact 2.25.
+
+![b1=0.10, b12=0.10, b21=0.10, b22=0.20](Figures/2 pop, N1=1000, N2=1000, 100 days, b1=0.10, b12=0.10, b21=0.10, b22=0.20 g1=0.2, g2=0.2, R0=1 .png)
+
+Fig.6: Plot of the pandemic for 2 populations with $`\beta_11 = 0.10`$, $`\beta_12 = 0.10`$, $`\beta_21 = 0.10`$ and $`\beta_22 = 0.20`$. This combination of beta and gamma gives a value R_0 = 0.75 and in fact the pandemic has light effects, with no visible peaks.
+
+![b1=0.20, b12=0.50, b21=0.10, b22=0.20](Figures/22 pop, N1=1000, N2=1000, 100 days, b1=0.20, b12=0.50, b21=0.10, b22=0.20 g1=0.2, g2=0.2.png)
+
+Fig.6: Plot of the pandemic for 2 populations with $`\beta_11 = 0.20`$, $`\beta_12 = 0.50`$, $`\beta_21 = 0.10`$ and $`\beta_22 = 0.20`$. This plot was made to show how one population can have an influence on the other. In fact, each has the same value for beta, but population 2 has a big influece on population 1 given by $`\beta_12 = 0.50`$. As a result, population 1 experiences a much bigger rise in infections.
 
 =======
 
