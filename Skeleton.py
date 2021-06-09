@@ -132,11 +132,10 @@ def plot(S,I,R):
     plt.show()
     
 def integrate(I):
-    t = np.arange(0,len(I))
-    integral = np.zeros(len(t))
-    for i in t:
-        integral[i] = np.trapz(I[:i], x = t[:i])
-        
+    time = np.arange(0,len(I))
+    integral = np.zeros(len(time))
+    for i in time:
+        integral[i] = np.trapz(I[:i], x = time[:i])
     return integral
 
 def Canada_init(place):
@@ -151,7 +150,91 @@ def Canada_init(place):
     rem_ont = rem_ont.tolist()
     act_ont = Place.numactive
     act_ont = act_ont.tolist()
-    Susc = N - np.array(act_ont[start:end]) - np.array(rem_ont[start:end])
+    act_ont = np.array(act_ont[start:end])
+    Susc = N - act_ont - np.array(rem_ont[start:end])
     Rem = np.array(rem_ont[start:end])
     #print('t start', t_ont[start], '\nt end', t_ont[end])
     return Rem, act_ont, Susc, t_ont
+
+def R_0calculator(Susc):
+    """Calculates R_0 and error"""
+    lhs1 = np.log(Susc / Susc[0])
+    rhs1 = Rem
+
+    res = stats.linregress(rhs1, lhs1)
+    #print(res.intercept*N/Rem[0])
+    R_0 = -res.slope*N
+    tinv = lambda p, df: abs(t.ppf(p/2, df))
+    ts = tinv(0.05, len(rhs1)-2)
+
+    textR_0 = str((f"{-N*res.slope:.6f} ± {N*ts*res.stderr:.6f}"))
+    R_0err = N*ts*res.stderr
+    #print("R_0 = " + textR_0)
+    
+    return lhs1, rhs1, R_0, R_0err, textR_0, res
+
+def gammacalculator(Rem, Infec):
+    """Calculate gamma and error"""
+    lhs2 = np.array(Rem)
+    rhs2 = integrate(Infec)
+    res2 = stats.linregress(rhs2, lhs2)
+    gamma = res2.slope
+    tinv2 = lambda p, df: abs(t.ppf(p/2, df))
+    ts2 = tinv2(0.05, len(rhs2)-2)
+
+    textgamma = str((f"{res2.slope:.6f} ± {ts2*res2.stderr:.6f}"))
+    gammaerr = ts2*res2.stderr
+
+    #print("gamma =", textgamma)
+    
+    return lhs2, rhs2, gamma, gammaerr, textgamma, res2
+
+
+def plotdataandfits():
+    """Plot all relevant data and fits"""
+    
+    # Plot removed and infected
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12,6)) 
+    date_form = DateFormatter('%b-%d')
+
+    ax1.xaxis.set_major_formatter(date_form)
+    ax1.scatter(np.array(t_ont[start:end]),np.array(Rem)/1e5, marker='.', label = "Real Data", facecolors='none', edgecolors='k', linewidths=0.5,)
+    ax1.set_ylabel('Removed $R(t)$ in $10^5$', fontsize=13)
+    ax1.plot(t_ont[start:end], R_model/1e5, label = "Fitted Model", c = 'b')
+    ax1.plot(t_ont[start:end], R_model1/1e5, label = "Confidence Interval", c = 'b', linestyle = '--')
+    ax1.plot(t_ont[start:end], R_model2/1e5, c = 'b', linestyle = '--')
+    ax1.set_title(place+" 2020", fontsize=13)
+    ax1.legend(fontsize = 13)
+
+    ax2.xaxis.set_major_formatter(date_form)
+    ax2.scatter(t_ont[start:end],np.array(Infec)/1e4, marker='.', label = "Real Data", facecolors='none', edgecolors='k', linewidths=0.5,) 
+    ax2.set_ylabel('Infected $I(t)$ in $10^{4}$', fontsize=13)
+    ax2.set_title(place+" 2020", fontsize=13)
+    ax2.plot(t_ont[start:end], I_model/1e4, label = "Fitted Model", c = 'b')
+    ax2.plot(t_ont[start:end], I_model1/1e4, label = "Confidence Interval", c = 'b', linestyle = '--')
+    ax2.plot(t_ont[start:end], I_model2/1e4, c = 'b', linestyle = '--')
+    ax2.legend(fontsize = 13)
+
+    plt.show()
+
+    #Plot data from which R_0 and gamma are obtained
+
+    fig, (ax3, ax4) = plt.subplots(1, 2, figsize=(12,6)) 
+    ax3.scatter(rhs1/1e5, lhs1/1e-3, facecolors='none', edgecolors='k', linewidths=0.5,label = "Real Data")
+    ax3.set_xlabel("$R(t)$ in $10^5$", fontsize=13)
+    ax3.set_ylabel("$\log(S(t)/S(t_0))$ in $10^{-3}$", fontsize=13)
+    ax3.plot(rhs1/1e5, (res.slope*rhs1+res.intercept)/1e-3, c = 'b', label = "Fitted Model")
+    #props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
+    ax3.text(0.05, 0.1, r"$R_0 = $" +textR_0, transform=ax3.transAxes, fontsize=14, verticalalignment='top')
+    ax3.legend(fontsize = 13)
+
+    ax4.scatter(rhs2/1e6, lhs2/1e5, facecolors='none', edgecolors='k', linewidths=0.5,label = "Real Data")
+    ax4.plot(rhs2/1e6, (gamma * rhs2 + res2.intercept)/1e5, c = 'b', label = "Fitted Model")
+    #ax4.plot(rhs2/1e6, ((gamma+gammaerr) * rhs2 + (gammaintercept))/1e5, c = 'r', label = "Fitted Model", linestyle='dashed') #attempt at plotting confidence interval but it's too small...
+    ax4.set_xlabel(r'$\int_{t_s}^t I(\tau) \mathrm{d}\tau$ in $10^6$', fontsize=13)
+    ax4.set_ylabel('$R(t)$ in $10^5$', fontsize=13)
+    ax4.text(1.5, 0.1, r"$\gamma = $" + textgamma, transform=ax3.transAxes, fontsize=14, verticalalignment='top')
+    ax4.legend(fontsize=13)
+
+    plt.show()
