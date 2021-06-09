@@ -131,12 +131,27 @@ def plot(S,I,R):
         ax.spines[spine].set_visible(False)
     plt.show()
     
-def integrate(I, t):
+def integrate(I):
+    t = np.arange(0,len(I))
     integral = np.zeros(len(t))
     for i in t:
         integral[i] = np.trapz(I[:i], x = t[:i])
         
     return integral
 
-def linear_func(x, rep_num):
-    return -rep_num/N * x + rep_num/N*Rem[0]
+def Canada_init(place):
+    """Uses pandas to extract data for canada."""
+    condition = df['prname'] == place
+    Place = df[condition]
+    t_ont = Place.date
+    t_ont = t_ont.tolist()
+
+    # Define populations
+    rem_ont = Place.numdeaths + Place.numrecover
+    rem_ont = rem_ont.tolist()
+    act_ont = Place.numactive
+    act_ont = act_ont.tolist()
+    Susc = N - np.array(act_ont[start:end]) - np.array(rem_ont[start:end])
+    Rem = np.array(rem_ont[start:end])
+    #print('t start', t_ont[start], '\nt end', t_ont[end])
+    return Rem, act_ont, Susc, t_ont
