@@ -32,6 +32,40 @@ def deriv(y, t, beta, gamma):
     
     return dSdt, dIdt, dRdt, dVdt
 
+def deriv_new(y, t, beta, gamma):
+    """
+    The SIR model differential equations for one population.
+    Parameters
+    ------------------------------------
+    y: vector
+        vector where the number of S (susceptible), I (infected) and R (recovered) are stored
+    t:
+        grid of time points (in days)
+    beta: float
+        contact rate of the disease. An infected individual comes into contact with beta*N individuals per unit time
+    gamma: float
+        mean recovery rate. 1/gamma is the average duration of the disease (in days)
+    Returns
+    -----------------------------------
+    dSdt: float
+        Differential equation for the change in susceptible individuals
+    dIdt: float
+        Differential equation for the change in infected individuals
+    dRdt: float
+        Differential equation for the change in recovered individuals
+    """
+    S, I, R, V = y
+    if S > 0:
+        dSdt = -beta * S * I / N - alpha[i]*u[i]
+        dVdt = alpha[i]*u[i]
+    else:
+        dSdt = -beta * S * I / N
+        dVdt = 0
+    dIdt = beta * S * I / N - gamma * I
+    dRdt = gamma * I
+    
+    return dSdt, dIdt, dRdt, dVdt
+
 def deriv2pop(y, t, beta, gamma):
     """
     The SIR model differential equations for two populations.
