@@ -99,3 +99,25 @@ Fig.10: Plots of the equations above using real data for Canada.
 =======
 
 Week 3 (07.06-13.06)
+
+Below are the plots of the model together with the real data. The parameters are those obtained from the linear regression.
+
+![](Figures/Canada_model_fit_conf_interval.JPG)
+
+Fig.11: Model and data for Canada from July 17, 2020 to January 8, 2021.
+
+Below, we use the model to predict the vaccine's impact. We assume the vaccine begins to be administered.
+
+![](Figures/Infected_Canada_vaccine.JPG)
+
+Fig.12: Infected
+
+![](Figures/Removed_Canada_vaccine.JPG)
+
+Fig.12: Removed
+
+![](Figures/Dailynew_Canada_vaccine.JPG)
+
+Fig.14: Daily new cases
+
+The data is in reasonable agreement with the [literature](Literature/Canada_vaccination.pdf). The parameters that we obtain are less accurate because we do not use a non-linear program solver to refine the model.
