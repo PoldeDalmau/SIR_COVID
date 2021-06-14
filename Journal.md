@@ -106,7 +106,7 @@ Below are the plots of the model together with the real data. The parameters are
 
 Fig.11: Model and data for Canada from July 17, 2020 to January 8, 2021.
 
-Below, we use the model to predict the vaccine's impact. We assume the vaccine begins to be administered on January 8, 2021.
+Below, we use the model to predict the vaccine's impact. We assume the vaccine begins to be administered on January 8, 2021Chan.
 
 ![](Figures/Infected_Canada_vaccine.JPG)
 

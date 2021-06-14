@@ -144,6 +144,17 @@ def derivnpop(y, t, beta, gamma):
     return *dSdt, *dIdt, *dRdt
 
 def plot(S,I,R):
+    """plots the population types.
+    Inputs:
+    S: list or numpy array
+        Susceptibles
+    I: list or numpy array
+        Infected
+    R: list or numpy array
+        Removed
+    Returns: 
+        None
+    """
     # Plot the data on three separate curves for S(t), I(t) and R(t)
     fig = plt.figure(facecolor='w')
     ax = fig.add_subplot(111, facecolor='#dddddd', axisbelow=True)
@@ -166,6 +177,13 @@ def plot(S,I,R):
     plt.show()
     
 def integrate(I):
+    """Computes integral from a starting time 0 up to a time t
+    Input:
+    I: list or numpy array
+        values of function to be integrated assuming equally spaced points
+    Returns:
+        values of integral
+    """
     time = np.arange(0,len(I))
     integral = np.zeros(len(time))
     for i in time:
@@ -173,7 +191,20 @@ def integrate(I):
     return integral
 
 def Canada_init(place):
-    """Uses pandas to extract data for canada."""
+    """Uses pandas to extract data for canada or any of its most affected provinces.
+    Input:
+    place: string
+        one of the following strings: 'Canada', 'Ontario', 'Quebec', 'British Columbia', Alberta', 'Saskatchewan', 'Manitoba'
+    Returns: 
+    Rem: list
+        Removed
+    act_ont:numpy array
+        active cases
+    Susc: numpy array
+        susceptibles
+    t_ont: list
+        dates in the time interval given by the dataframe (2020-01-31 until 2021-06-02)
+        """
     condition = df['prname'] == place
     Place = df[condition]
     t_ont = Place.date
@@ -184,14 +215,31 @@ def Canada_init(place):
     rem_ont = rem_ont.tolist()
     act_ont = Place.numactive
     act_ont = act_ont.tolist()
-    act_ont = np.array(act_ont[start:end])
-    Susc = N - act_ont - np.array(rem_ont[start:end])
-    Rem = np.array(rem_ont[start:end])
+    act_ont = np.array(act_ont)
+    Susc = N - act_ont - np.array(rem_ont)
+    Rem = np.array(rem_ont)
     #print('t start', t_ont[start], '\nt end', t_ont[end])
     return Rem, act_ont, Susc, t_ont
 
 def R_0calculator(Susc):
-    """Calculates R_0 and error"""
+    """Calculates R_0 and error
+    Input:
+    Susc: list
+        Susceptibles (data)
+    Returns:
+    lhs1: numpy array
+        left hand side of the equation 1 in the notebook Example_Canada.ipynb
+    rhs1: numpy array
+        right  hand side of the equation 1 in the notebook Example_Canada.ipynb
+    R_0: float
+        basic reproduction number for the given data
+    R_0err: float
+        error from linear regression is taken as the error in R_0
+    textR_0: string
+        contains all interesting information from the calculated parameter
+    res: scipy.stats._stats_mstats_common.LinregressResult
+        output from scipy.stats.linregress, see its documentation for more information
+        """
     lhs1 = np.log(Susc / Susc[0])
     rhs1 = Rem
 
@@ -208,7 +256,19 @@ def R_0calculator(Susc):
     return lhs1, rhs1, R_0, R_0err, textR_0, res
 
 def gammacalculator(Rem, Infec):
-    """Calculate gamma and error"""
+    """Calculate gamma and error
+    lhs2: numpy array
+        left hand side of the equation 2 in the notebook Example_Canada.ipynb
+    rhs2: numpy array
+        right  hand side of the equation 2 in the notebook Example_Canada.ipynb
+    gamma: float
+        removal rate for the given data
+    gammaerr: float
+        error from linear regression is taken as the error in R_0
+    textgamma: string
+        contains all interesting information from the calculated parameter
+    res: scipy.stats._stats_mstats_common.LinregressResult
+        output from scipy.stats.linregress, see its documentation for more information"""
     lhs2 = np.array(Rem)
     rhs2 = integrate(Infec)
     res2 = stats.linregress(rhs2, lhs2)
@@ -225,7 +285,7 @@ def gammacalculator(Rem, Infec):
 
 
 def plotdataandfits():
-    """Plot all relevant data and fits"""
+    """Plot all relevant data and fits for the data in notebook Example_Canada.ipynb. This function is made only to make the notebook look neater."""
     
     # Plot removed and infected
 
@@ -242,14 +302,17 @@ def plotdataandfits():
     ax1.legend(fontsize = 13)
 
     ax2.xaxis.set_major_formatter(date_form)
-    ax2.scatter(t_ont[start:end],np.array(Infec)/1e4, marker='.', label = "Real Data", facecolors='none', edgecolors='k', linewidths=0.5,) 
+    ax2.scatter(t_ont[start:end],np.array(Infec)/1e4, marker='.', label = "Real Data", facecolors='none', edgecolors='k', linewidths=0.5) 
     ax2.set_ylabel('Infected $I(t)$ in $10^{4}$', fontsize=13)
     ax2.set_title(place+" 2020", fontsize=13)
     ax2.plot(t_ont[start:end], I_model/1e4, label = "Fitted Model", c = 'b')
     ax2.plot(t_ont[start:end], I_model1/1e4, label = "Confidence Interval", c = 'b', linestyle = '--')
     ax2.plot(t_ont[start:end], I_model2/1e4, c = 'b', linestyle = '--')
     ax2.legend(fontsize = 13)
-
+    
+    
+    ax1.grid()
+    ax2.grid()
     plt.show()
 
     #Plot data from which R_0 and gamma are obtained
@@ -270,5 +333,56 @@ def plotdataandfits():
     ax4.set_ylabel('$R(t)$ in $10^5$', fontsize=13)
     ax4.text(1.5, 0.1, r"$\gamma = $" + textgamma, transform=ax3.transAxes, fontsize=14, verticalalignment='top')
     ax4.legend(fontsize=13)
+    
+    ax3.grid()
+    ax4.grid()
+    plt.show()
+    
+    
+    
+def plotvaccinedataandmodel():
+    # Predictions of vaccine kicking in on the 8th of January 2021
 
+    real_t = pd.date_range(start="2020-07-17",end="2021-12-31")
+    fig, (ax1, ax2, ax3) = plt.subplots(3,1, figsize=(12,18))
+
+    for i in range(7):
+
+        if i > 3:
+            ax1.plot(real_t,R_final[i], label = str(u_explain[i]), linestyle = '--')
+            ax2.plot(real_t,I_final[i], label = str(u_explain[i]), linestyle = '--')
+            ax3.plot(real_t,daily_I_final[i], label = str(u_explain[i]), linestyle = '--')
+        else:
+            ax1.plot(real_t,R_final[i], label = str(u_explain[i]))
+            ax2.plot(real_t,I_final[i], label = str(u_explain[i]))
+            ax3.plot(real_t,daily_I_final[i], label = str(u_explain[i]))
+        ax1.set_ylabel('Removed $R(t)$', fontsize = 16)
+        ax2.set_ylabel('Infected $I(t)$', fontsize = 16)
+        ax3.set_ylabel('Daily new infections', fontsize = 16)
+
+    ax1.scatter(t_ont[start:], Rem_all[start:], label = "Real data", marker='+', facecolors='k', edgecolors='k', linewidths=0.5)
+    ax2.scatter(t_ont[start:], Infec_all[start:], label = "Real data", marker='+', facecolors='k', edgecolors='k', linewidths=0.5)
+
+
+    ax1.xaxis.set_major_formatter(DateFormatter('%b-%y'))
+    ax2.xaxis.set_major_formatter(DateFormatter('%b-%y'))
+    ax3.xaxis.set_major_formatter(DateFormatter('%b-%y'))
+
+    ax1.set_title(place)
+    #ax2.set_title(place)
+    #ax3.set_title(place)
+    ax1.tick_params('x', labelrotation=45)
+    ax2.tick_params('x', labelrotation=45)
+    ax3.tick_params('x', labelrotation=45)
+
+
+    ax1.axvline(pd.Timestamp('2021-01-21'),color='k', linestyle = '--', label = 'Start of vaccination (January 8, 2021)')
+    ax2.axvline(pd.Timestamp('2021-01-21'),color='k', linestyle = '--', label = 'Start of vaccination (January 8, 2021)')
+    ax3.axvline(pd.Timestamp('2021-01-21'),color='k', linestyle = '--', label = 'Start of vaccination (January 8, 2021)')
+    ax1.legend()
+    ax2.legend()
+    ax3.legend()
+    ax1.grid()
+    ax2.grid()
+    ax3.grid()
     plt.show()
