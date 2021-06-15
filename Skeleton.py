@@ -360,8 +360,8 @@ def plotvaccinedataandmodel():
         ax2.set_ylabel('Infected $I(t)$', fontsize = 16)
         ax3.set_ylabel('Daily new infections', fontsize = 16)
 
-    ax1.scatter(t_ont[start:], Rem_all[start:], label = "Real data", marker='+', facecolors='k', edgecolors='k', linewidths=0.5)
-    ax2.scatter(t_ont[start:], Infec_all[start:], label = "Real data", marker='+', facecolors='k', edgecolors='k', linewidths=0.5)
+    #ax1.scatter(t_ont[start:], Rem_all[start:], label = "Real data", marker='+', facecolors='k', edgecolors='k', linewidths=0.5)
+    #ax2.scatter(t_ont[start:], Infec_all[start:], label = "Real data", marker='+', facecolors='k', edgecolors='k', linewidths=0.5)
 
 
     ax1.xaxis.set_major_formatter(DateFormatter('%b-%y'))
@@ -375,10 +375,10 @@ def plotvaccinedataandmodel():
     ax2.tick_params('x', labelrotation=45)
     ax3.tick_params('x', labelrotation=45)
 
-
-    ax1.axvline(pd.Timestamp('2021-01-21'),color='k', linestyle = '--', label = 'Start of vaccination (January 8, 2021)')
-    ax2.axvline(pd.Timestamp('2021-01-21'),color='k', linestyle = '--', label = 'Start of vaccination (January 8, 2021)')
-    ax3.axvline(pd.Timestamp('2021-01-21'),color='k', linestyle = '--', label = 'Start of vaccination (January 8, 2021)')
+    strin = 'Start of vaccination'
+    ax1.axvline(pd.Timestamp(real_t_string),color='k', linestyle = '--', label = strin + " (" + real_t_string + ")")
+    ax2.axvline(pd.Timestamp(real_t_string),color='k', linestyle = '--', label = strin + " (" + real_t_string + ")")
+    ax3.axvline(pd.Timestamp(real_t_string),color='k', linestyle = '--', label = strin + " (" + real_t_string + ")")
     ax1.legend()
     ax2.legend()
     ax3.legend()
